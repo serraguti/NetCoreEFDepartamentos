@@ -31,11 +31,13 @@ namespace NetCoreEFDepartamentos
                 .AddTransient<RepositoryDepartamentos>()
                 .AddDbContext<DepartamentosContext>
                 (options => options.UseSqlServer(connectionString))
+                .AddSingleton<Form1>()
                 .BuildServiceProvider();
-
-
-
-            Application.Run(new Form1());
+            //RECUPERAMOS LA CLASE FORM QUE ESTA EN LA APLICACION
+            //PARA PODER LANZARLA EN EL MAIN
+            var form = provider.GetService<Form1>();
+            //LANZAMOS LA APLICACION CON NUESTRO FORMULARIO DE IoC
+            Application.Run(form);
         }
     }
 }
