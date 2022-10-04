@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreEFDepartamentos.Data;
 using NetCoreEFDepartamentos.Repositories;
@@ -21,9 +22,15 @@ namespace NetCoreEFDepartamentos
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //ESCRIBIMOS NUESTRA CADENA DE CONEXION
+            //DEBEMOS RECUPERAR EL FICHERO DE CONFIGURACION DE LA APP
+            //AÑADIMOS EL NOMBRE DEL FICHERO A NUESTRA APP
+            var builder = new ConfigurationBuilder();
+            builder.AddJsonFile("appsettings.json");
+            //GENERAMOS EL FICHERO DE CONFIGURACION
+            var configuration = builder.Build();
+            //RECUPERAMOS NUESTRA CADENA DE CONEXION
             string connectionString =
-                @"Data Source=LOCALHOST;Initial Catalog=HOSPITAL;Persist Security Info=True;User ID=SA;Password=12345";
+                configuration.GetConnectionString("HospitalSQLServer");
             //PARA RESOLVER LAS DEPENDENCIAS (IoC) NECESITAMOS 
             //UN PROVEEDOR QUE SE LLAMA ServiceCollection
             //LOS REPOSITORIOS SIEMPRE DEBEN SER Transient
